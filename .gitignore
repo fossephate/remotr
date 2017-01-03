@@ -70,6 +70,11 @@ artifacts/
 *.svclog
 *.scc
 
+*boost*
+*libcurl*
+*curl*
+*poco*
+
 # Chutzpah Test files
 _Chutzpah*
 

@@ -1,0 +1,11 @@
+bjam install --prefix="D:\Google Drive\development\cpp\Win\hacks\hack1\full\boost-sio3" --with-system --with-date_time --with-random link=static runtime-link=shared threading=multi debug address-model=64
+
+
+
+
+
+bjam install variant=debug --prefix="D:\Google Drive\development\cpp\Win\hacks\hack1\full\boost-sio5" --with-system --with-date_time --with-random link=static runtime-link=shared --stagedir="debug" threading=multi debug address-model=64
+
+
+
+
