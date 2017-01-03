@@ -19,7 +19,6 @@ namespace fs = std::experimental::filesystem;
 	#include <Windows.h>
 	#include <Lmcons.h>
 	#include <shlobj.h>
-
 #endif
 
 
