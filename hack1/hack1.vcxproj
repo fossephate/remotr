@@ -23,6 +23,7 @@
     <ClCompile Include="include\external\sio\internal\sio_packet.cpp" />
     <ClCompile Include="include\external\sio\sio_client.cpp" />
     <ClCompile Include="include\external\sio\sio_socket.cpp" />
+    <ClCompile Include="src\base64.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
