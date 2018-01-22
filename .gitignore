@@ -13,6 +13,7 @@
 
 # Custom
 *.db
+full/
 
 # Build results
 #[Dd]ebug/
@@ -74,10 +75,10 @@ artifacts/
 *.svclog
 *.scc
 
-*boost*
-*libcurl*
-*curl*
-*poco*
+#*boost*
+#*libcurl*
+#*curl*
+#*poco*
 
 # Chutzpah Test files
 _Chutzpah*
