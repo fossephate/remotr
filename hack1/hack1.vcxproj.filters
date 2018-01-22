@@ -41,5 +41,8 @@
     <ClInclude Include="include\base64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\MouseController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
