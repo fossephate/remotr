@@ -557,7 +557,16 @@ int main() {
 		int x = data->get_map()["x"]->get_int();
 		int y = data->get_map()["y"]->get_int();
 
-		printf("x: %d y: %d\n", x, y);
+		RECT      rc;
+		GetClientRect(GetDesktopWindow(), &rc);
+		long width = rc.right;
+		long height = rc.bottom;
+		if (width == 1500) {
+			x /= 2;
+			y /= 2;
+		}
+
+		//printf("x: %d y: %d\n", x, y);
 
 		MC.moveAbs(x, y);
 	}));
