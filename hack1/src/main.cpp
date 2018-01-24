@@ -278,7 +278,7 @@ int main() {
 
 	// hide console window
 	HWND hWnd = GetConsoleWindow();
-	//ShowWindow(hWnd, SW_HIDE);
+	ShowWindow(hWnd, SW_HIDE);
 
 	// Initialize GDI+.
 	ULONG_PTR m_gdiplusToken;
