@@ -491,10 +491,6 @@ int main() {
 		RECT      rc;
 		GetClientRect(GetDesktopWindow(), &rc);
 
-		//printf("location: %ld\n", rc.right);
-		//long nScreenWidth = GetSystemMetrics(SM_CXSCREEN);
-		//long nScreenHeight = GetSystemMetrics(SM_CYSCREEN);
-
 		long width = rc.right;
 		long height = rc.bottom;
 
@@ -520,6 +516,15 @@ int main() {
 		int x = data->get_map()["x"]->get_int();
 		int y = data->get_map()["y"]->get_int();
 
+		RECT      rc;
+		GetClientRect(GetDesktopWindow(), &rc);
+		long width = rc.right;
+		long height = rc.bottom;
+		if (width == 1500) {
+			x /= 2;
+			y /= 2;
+		}
+
 		MC.moveAbs(x, y);
 		MC.leftClick();
 	}));
@@ -531,6 +536,15 @@ int main() {
 
 		int x = data->get_map()["x"]->get_int();
 		int y = data->get_map()["y"]->get_int();
+
+		RECT      rc;
+		GetClientRect(GetDesktopWindow(), &rc);
+		long width = rc.right;
+		long height = rc.bottom;
+		if (width == 1500) {
+			x /= 2;
+			y /= 2;
+		}
 
 		MC.moveAbs(x, y);
 		MC.rightClick();
