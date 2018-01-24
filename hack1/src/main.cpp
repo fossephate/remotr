@@ -507,6 +507,25 @@ int main() {
 		myClient.socket()->emit("screenshot", encoded_string);
 	}));
 
+	// move mouse
+	myClient.socket()->on("mvm", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
+
+		std::cout << "recieved move mouse." << std::endl;
+
+		int x = data->get_map()["x"]->get_int();
+		int y = data->get_map()["y"]->get_int();
+
+		RECT      rc;
+		GetClientRect(GetDesktopWindow(), &rc);
+		long width = rc.right;
+		long height = rc.bottom;
+		if (width == 1500) {
+			x /= 2;
+			y /= 2;
+		}
+
+		MC.moveAbs(x, y);
+	}));
 
 	// left click:
 	myClient.socket()->on("lcl", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
@@ -526,6 +545,7 @@ int main() {
 		}
 
 		MC.moveAbs(x, y);
+		Sleep(100);
 		MC.leftClick();
 	}));
 
@@ -547,36 +567,17 @@ int main() {
 		}
 
 		MC.moveAbs(x, y);
+		Sleep(100);
 		MC.rightClick();
-	}));
-
-	// move mouse
-	myClient.socket()->on("mvm", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
-
-		std::cout << "recieved move mouse." << std::endl;
-
-		int x = data->get_map()["x"]->get_int();
-		int y = data->get_map()["y"]->get_int();
-
-		RECT      rc;
-		GetClientRect(GetDesktopWindow(), &rc);
-		long width = rc.right;
-		long height = rc.bottom;
-		if (width == 1500) {
-			x /= 2;
-			y /= 2;
-		}
-
-		MC.moveAbs(x, y);
 	}));
 
 
 	// send keystrokes
-	myClient.socket()->on("keys", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
+	myClient.socket()->on("txt", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
 
-		std::cout << "recieved keys." << std::endl;
+		std::cout << "recieved text." << std::endl;
 
-		std::string keys = data->get_map()["keys"]->get_string();
+		std::string keys = data->get_map()["text"]->get_string();
 
 		// convert to char *'s
 		//std::vector<char> v2(keys.length() + 1);
@@ -589,8 +590,6 @@ int main() {
 		//sizeof(TCHAR)==sizeof(char) may not be true:
 		std::copy(keys.begin(), keys.end(), param);
 		sendKeystrokes(param);
-
-
 	}));
 	
 
