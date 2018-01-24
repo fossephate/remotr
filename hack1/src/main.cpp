@@ -522,20 +522,18 @@ int main() {
 
 		MC.moveAbs(x, y);
 		MC.leftClick();
-
 	}));
 
 	// right click:
 	myClient.socket()->on("rcl", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
 
-		std::cout << "recieved left click." << std::endl;
+		std::cout << "recieved right click." << std::endl;
 
 		int x = data->get_map()["x"]->get_int();
 		int y = data->get_map()["y"]->get_int();
 
 		MC.moveAbs(x, y);
-		MC.leftClick();
-
+		MC.rightClick();
 	}));
 
 	myClient.socket()->on("mvm", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
@@ -548,8 +546,6 @@ int main() {
 		printf("x: %d y: %d\n", x, y);
 
 		MC.moveAbs(x, y);
-		//MC.moveRel(100, 100);
-
 	}));
 	
 
