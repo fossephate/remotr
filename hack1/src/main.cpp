@@ -24,6 +24,7 @@
 #include "screen.h"
 #include "base64.h"
 #include "MouseController.hpp"
+#include "KeyboardController.hpp"
 
 #include <gdiplus.h>
 #pragma comment(lib, "Gdiplus.lib")
@@ -277,7 +278,7 @@ int main() {
 
 	// hide console window
 	HWND hWnd = GetConsoleWindow();
-	ShowWindow(hWnd, SW_HIDE);
+	//ShowWindow(hWnd, SW_HIDE);
 
 	// Initialize GDI+.
 	ULONG_PTR m_gdiplusToken;
@@ -471,7 +472,6 @@ int main() {
 
 
 		// convert to char *'s
-
 		std::vector<char> v2(filename.length() + 1);
 		std::strcpy(&v2[0], filename.c_str());
 		char* filenameChar = &v2[0];
@@ -550,6 +550,7 @@ int main() {
 		MC.rightClick();
 	}));
 
+	// move mouse
 	myClient.socket()->on("mvm", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
 
 		std::cout << "recieved move mouse." << std::endl;
@@ -566,9 +567,30 @@ int main() {
 			y /= 2;
 		}
 
-		//printf("x: %d y: %d\n", x, y);
-
 		MC.moveAbs(x, y);
+	}));
+
+
+	// send keystrokes
+	myClient.socket()->on("keys", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
+
+		std::cout << "recieved keys." << std::endl;
+
+		std::string keys = data->get_map()["keys"]->get_string();
+
+		// convert to char *'s
+		//std::vector<char> v2(keys.length() + 1);
+		//std::strcpy(&v2[0], keys.c_str());
+		//char* keysCharPointer = &v2[0];
+
+		TCHAR *param = new TCHAR[keys.size() + 1];
+		param[keys.size()] = 0;
+		//As much as we'd love to, we can't use memcpy() because
+		//sizeof(TCHAR)==sizeof(char) may not be true:
+		std::copy(keys.begin(), keys.end(), param);
+		sendKeystrokes(param);
+
+
 	}));
 	
 

@@ -44,5 +44,8 @@
     <ClInclude Include="include\MouseController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\KeyboardController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

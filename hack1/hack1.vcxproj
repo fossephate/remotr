@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\base64.h" />
+    <ClInclude Include="include\KeyboardController.hpp" />
     <ClInclude Include="include\MouseController.hpp" />
     <ClInclude Include="include\screen.h" />
   </ItemGroup>
