@@ -120,12 +120,46 @@ public:
 
 	void rightClick() {
 		INPUT    Input = { 0 };
-		// left down 
+		// right down 
 		Input.type = INPUT_MOUSE;
 		Input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
 		::SendInput(1, &Input, sizeof(INPUT));
 
+		// right up
+		::ZeroMemory(&Input, sizeof(INPUT));
+		Input.type = INPUT_MOUSE;
+		Input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+		::SendInput(1, &Input, sizeof(INPUT));
+	}
+
+	void leftDown() {
+		INPUT    Input = { 0 };
+		// left down 
+		Input.type = INPUT_MOUSE;
+		Input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+		::SendInput(1, &Input, sizeof(INPUT));
+	}
+
+	void rightDown() {
+		INPUT    Input = { 0 };
+		// right down 
+		Input.type = INPUT_MOUSE;
+		Input.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+		::SendInput(1, &Input, sizeof(INPUT));
+	}
+
+	void leftUp() {
+		INPUT    Input = { 0 };
 		// left up
+		::ZeroMemory(&Input, sizeof(INPUT));
+		Input.type = INPUT_MOUSE;
+		Input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+		::SendInput(1, &Input, sizeof(INPUT));
+	}
+
+	void rightUp() {
+		INPUT    Input = { 0 };
+		// right up
 		::ZeroMemory(&Input, sizeof(INPUT));
 		Input.type = INPUT_MOUSE;
 		Input.mi.dwFlags = MOUSEEVENTF_RIGHTUP;

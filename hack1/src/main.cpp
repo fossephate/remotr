@@ -507,13 +507,15 @@ int main() {
 		myClient.socket()->emit("screenshot", encoded_string);
 	}));
 
-	// move mouse
-	myClient.socket()->on("mvm", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
+	// mouse action:
+	myClient.socket()->on("mac", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
 
-		std::cout << "recieved move mouse." << std::endl;
+		std::cout << "recieved mouse action." << std::endl;
 
 		int x = data->get_map()["x"]->get_int();
 		int y = data->get_map()["y"]->get_int();
+
+		int which = data->get_map()["which"]->get_int();
 
 		RECT      rc;
 		GetClientRect(GetDesktopWindow(), &rc);
@@ -524,51 +526,44 @@ int main() {
 			y /= 2;
 		}
 
+		// action 0: move mouse		- no delay
+		// action 1: left click		- has delay
+		// action 2: right click	- has delay
+		// action 3: left down		- has delay
+		// action 4: right down		- has delay
+		// action 5: left up		- has delay
+		// action 6: right up		- has delay
+
 		MC.moveAbs(x, y);
-	}));
-
-	// left click:
-	myClient.socket()->on("lcl", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
-
-		std::cout << "recieved left click." << std::endl;
-
-		int x = data->get_map()["x"]->get_int();
-		int y = data->get_map()["y"]->get_int();
-
-		RECT      rc;
-		GetClientRect(GetDesktopWindow(), &rc);
-		long width = rc.right;
-		long height = rc.bottom;
-		if (width == 1500) {
-			x /= 2;
-			y /= 2;
+		if (which > 0) {
+			Sleep(100);
 		}
 
-		MC.moveAbs(x, y);
-		Sleep(100);
-		MC.leftClick();
-	}));
-
-	// right click:
-	myClient.socket()->on("rcl", sio::socket::event_listener_aux([&](std::string const& name, sio::message::ptr const& data, bool isAck, sio::message::list &ack_resp) {
-
-		std::cout << "recieved right click." << std::endl;
-
-		int x = data->get_map()["x"]->get_int();
-		int y = data->get_map()["y"]->get_int();
-
-		RECT      rc;
-		GetClientRect(GetDesktopWindow(), &rc);
-		long width = rc.right;
-		long height = rc.bottom;
-		if (width == 1500) {
-			x /= 2;
-			y /= 2;
+		switch (which) {
+		case 0:
+			//MC.moveAbs(x, y);
+			// already moved the mouse
+			break;
+		case 1:
+			MC.leftClick();
+			break;
+		case 2:
+			MC.rightClick();
+			break;
+		case 3:
+			MC.leftDown();
+			break;
+		case 4:
+			MC.rightDown();
+			break;
+		case 5:
+			MC.leftUp();
+			break;
+		case 6:
+			MC.rightUp();
+			break;
 		}
-
-		MC.moveAbs(x, y);
-		Sleep(100);
-		MC.rightClick();
+		
 	}));
 
 
