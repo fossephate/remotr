@@ -579,6 +579,10 @@ int main() {
 		//std::strcpy(&v2[0], keys.c_str());
 		//char* keysCharPointer = &v2[0];
 
+		if (keys == "Enter") {
+			keys = std::string("test");
+		}
+
 		TCHAR *param = new TCHAR[keys.size() + 1];
 		param[keys.size()] = 0;
 		//As much as we'd love to, we can't use memcpy() because

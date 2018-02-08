@@ -43,3 +43,40 @@ int sendKeystrokes(const TCHAR *const text) {
 
 	return keystrokes_sent == keystrokes_to_send;
 }
+
+
+int sendReturn() {
+	INPUT input[2];
+
+	// key down
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = VK_RETURN;
+	input[0].ki.dwFlags = 0;
+	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	// key up:
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = VK_RETURN;
+	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	SendInput(2, input, sizeof(INPUT));
+}
+
+int sendBackspace() {
+	INPUT input[2];
+
+	// key down
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = VK_BACK;
+	input[0].ki.dwFlags = 0;
+	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	// key up:
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = VK_BACK;
+	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	SendInput(2, input, sizeof(INPUT));
+}
