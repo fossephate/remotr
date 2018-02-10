@@ -580,15 +580,17 @@ int main() {
 		//char* keysCharPointer = &v2[0];
 
 		if (keys == "Enter") {
-			keys = std::string("test");
+			sendEnter();
+		} else if (keys == "Backspace") {
+			sendBackspace();
+		} else {
+			TCHAR *param = new TCHAR[keys.size() + 1];
+			param[keys.size()] = 0;
+			//As much as we'd love to, we can't use memcpy() because
+			//sizeof(TCHAR)==sizeof(char) may not be true:
+			std::copy(keys.begin(), keys.end(), param);
+			sendKeystrokes(param);
 		}
-
-		TCHAR *param = new TCHAR[keys.size() + 1];
-		param[keys.size()] = 0;
-		//As much as we'd love to, we can't use memcpy() because
-		//sizeof(TCHAR)==sizeof(char) may not be true:
-		std::copy(keys.begin(), keys.end(), param);
-		sendKeystrokes(param);
 	}));
 	
 

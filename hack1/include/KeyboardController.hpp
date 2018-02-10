@@ -45,7 +45,7 @@ int sendKeystrokes(const TCHAR *const text) {
 }
 
 
-int sendReturn() {
+int sendEnter() {
 	INPUT input[2];
 
 	// key down
