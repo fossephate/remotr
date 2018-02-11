@@ -81,8 +81,6 @@ void sendBackspace() {
 	SendInput(2, input, sizeof(INPUT));
 }
 
-
-
 void sendTab() {
 	INPUT input[2];
 
@@ -95,6 +93,114 @@ void sendTab() {
 	// key up:
 	input[1].type = INPUT_KEYBOARD;
 	input[1].ki.wVk = VK_TAB;
+	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	SendInput(2, input, sizeof(INPUT));
+}
+
+void sendUpArrow() {
+	INPUT input[2];
+
+	// key down
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = VK_UP;
+	input[0].ki.dwFlags = 0;
+	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	// key up:
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = VK_UP;
+	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	SendInput(2, input, sizeof(INPUT));
+}
+
+void sendDownArrow() {
+	INPUT input[2];
+
+	// key down
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = VK_DOWN;
+	input[0].ki.dwFlags = 0;
+	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	// key up:
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = VK_DOWN;
+	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	SendInput(2, input, sizeof(INPUT));
+}
+
+void sendLeftArrow() {
+	INPUT input[2];
+
+	// key down
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = VK_LEFT;
+	input[0].ki.dwFlags = 0;
+	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	// key up:
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = VK_LEFT;
+	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	SendInput(2, input, sizeof(INPUT));
+}
+
+void sendRightArrow() {
+	INPUT input[2];
+
+	// key down
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = VK_RIGHT;
+	input[0].ki.dwFlags = 0;
+	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	// key up:
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = VK_RIGHT;
+	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	SendInput(2, input, sizeof(INPUT));
+}
+
+void sendShift() {
+	INPUT input[2];
+
+	// key down
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = VK_SHIFT;
+	input[0].ki.dwFlags = 0;
+	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	// key up:
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = VK_SHIFT;
+	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	SendInput(2, input, sizeof(INPUT));
+}
+
+void sendCaps() {
+	INPUT input[2];
+
+	// key down
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = VK_CAPITAL;
+	input[0].ki.dwFlags = 0;
+	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
+
+	// key up:
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = VK_CAPITAL;
 	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
 	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
 
@@ -203,79 +309,6 @@ void sendEscape() {
 	// key up:
 	input[1].type = INPUT_KEYBOARD;
 	input[1].ki.wVk = VK_ESCAPE;
-	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
-	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
-
-	SendInput(2, input, sizeof(INPUT));
-}
-
-
-void sendUpArrow() {
-	INPUT input[2];
-
-	// key down
-	input[0].type = INPUT_KEYBOARD;
-	input[0].ki.wVk = VK_UP;
-	input[0].ki.dwFlags = 0;
-	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
-
-	// key up:
-	input[1].type = INPUT_KEYBOARD;
-	input[1].ki.wVk = VK_UP;
-	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
-	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
-
-	SendInput(2, input, sizeof(INPUT));
-}
-
-void sendDownArrow() {
-	INPUT input[2];
-
-	// key down
-	input[0].type = INPUT_KEYBOARD;
-	input[0].ki.wVk = VK_DOWN;
-	input[0].ki.dwFlags = 0;
-	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
-
-	// key up:
-	input[1].type = INPUT_KEYBOARD;
-	input[1].ki.wVk = VK_DOWN;
-	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
-	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
-
-	SendInput(2, input, sizeof(INPUT));
-}
-
-void sendLeftArrow() {
-	INPUT input[2];
-
-	// key down
-	input[0].type = INPUT_KEYBOARD;
-	input[0].ki.wVk = VK_LEFT;
-	input[0].ki.dwFlags = 0;
-	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
-
-	// key up:
-	input[1].type = INPUT_KEYBOARD;
-	input[1].ki.wVk = VK_LEFT;
-	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
-	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
-
-	SendInput(2, input, sizeof(INPUT));
-}
-
-void sendRightArrow() {
-	INPUT input[2];
-
-	// key down
-	input[0].type = INPUT_KEYBOARD;
-	input[0].ki.wVk = VK_RIGHT;
-	input[0].ki.dwFlags = 0;
-	input[0].ki.dwExtraInfo = GetMessageExtraInfo();
-
-	// key up:
-	input[1].type = INPUT_KEYBOARD;
-	input[1].ki.wVk = VK_RIGHT;
 	input[1].ki.dwFlags = KEYEVENTF_KEYUP;
 	input[1].ki.dwExtraInfo = GetMessageExtraInfo();
 

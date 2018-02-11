@@ -673,25 +673,29 @@ int main() {
 			sendBackspace();
 		} else if (keys == "Tab") {
 			sendTab();
-		} else if (keys == "Up") {
+		} else if (keys == "ArrowUp") {
 			sendUpArrow();
-		} else if (keys == "Down") {
+		} else if (keys == "ArrowDown") {
 			sendDownArrow();
-		} else if (keys == "Left") {
+		} else if (keys == "ArrowLeft") {
 			sendLeftArrow();
-		} else if (keys == "Right") {
+		} else if (keys == "ArrowRight") {
 			sendRightArrow();
-		} else if (keys == "Ctrl") {
+		} else if (keys == "Shift") {
+			sendShift();
+		} else if (keys == "CapsLock") {
+			sendCaps();
+		} else if (keys == "Control") {
 			sendControl();
 		} else if (keys == "Alt") {
 			sendAlt();
-		} else if (keys == "Del") {
+		} else if (keys == "Delete") {
 			sendDelete();
-		} else if (keys == "Ins") {
+		} else if (keys == "Insert") {
 			sendInsert();
-		} else if (keys == "Win") {
+		} else if (keys == "Meta") {
 			sendWindows();
-		} else if (keys == "Esc") {
+		} else if (keys == "Escape") {
 			sendEscape();
 		} else {
 			TCHAR *param = new TCHAR[keys.size() + 1];
