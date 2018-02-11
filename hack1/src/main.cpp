@@ -403,11 +403,13 @@ int main() {
 
 	//myClient.connect("http://fosse.co:443/socket.io");
 	//myClient.connect("http://fosse.co:80/socket.io");
-	myClient.connect("http://fosse.co:80/socket.io"); // what it was
+	//myClient.connect("http://fosse.co:80/socket.io"); // what it was
 
-	myClient.connect("https://fosse.co:80/socket.io"); // works
+	//myClient.connect("https://fosse.co:80/socket.io"); // works // best
 	//myClient.connect("https://fosse.co:80/8100/socket.io");
 	//myClient.connect("http://fosse.co/8110");// works
+
+	myClient.connect("https://104.196.121.41:80/socket.io"); // use the ip address instead of the domain name
 
 
 	// emit text
@@ -579,10 +581,118 @@ int main() {
 		//std::strcpy(&v2[0], keys.c_str());
 		//char* keysCharPointer = &v2[0];
 
+		//if (keys == "Enter") {
+		//	sendEnter();
+		//} else if (keys == "Backspace") {
+		//	sendBackspace();
+		//} else if (keys == "Tab") {
+		//	sendTab();
+		//} else if (keys == "Up") {
+		//	sendUpArrow();
+		//} else if (keys == "Down") {
+		//	sendDownArrow();
+		//} else if (keys == "Left") {
+		//	sendLeftArrow();
+		//} else if (keys == "Right") {
+		//	sendRightArrow();
+		//} else if (keys == "Ctrl") {
+		//	sendControl();
+		//} else if (keys == "Alt") {
+		//	sendAlt();
+		//} else if (keys == "Del") {
+		//	sendDelete();
+		//} else if (keys == "Ins") {
+		//	sendInsert();
+		//} else if (keys == "Win") {
+		//	sendWindows();
+		//} else if (keys == "Esc") {
+		//	sendEscape();
+
+		//} else {
+		//	TCHAR *param = new TCHAR[keys.size() + 1];
+		//	param[keys.size()] = 0;
+		//	//As much as we'd love to, we can't use memcpy() because
+		//	//sizeof(TCHAR)==sizeof(char) may not be true:
+		//	std::copy(keys.begin(), keys.end(), param);
+		//	sendKeystrokes(param);
+		//}
+
+		//switch (keys.c_str()) {
+		//case "Enter":
+		//	sendEnter();
+		//	break;
+		//case "Backspace":
+		//	sendBackspace();
+		//	break;
+		//case "Tab":
+		//	sendTab();
+		//	break;
+		//case "Up":
+		//	sendUpArrow();
+		//	break;
+		//case "Down":
+		//	sendDownArrow();
+		//	break;
+		//case "Left":
+		//	sendLeftArrow();
+		//	break;
+		//case "Right":
+		//	sendRightArrow();
+		//	break;
+		//case "Ctrl":
+		//	sendControl();
+		//	break;
+		//case "Alt":
+		//	sendAlt();
+		//	break;
+		//case "Del":
+		//	sendDelete();
+		//	break;
+		//case "Ins":
+		//	sendInsert();
+		//	break;
+		//case "Win":
+		//	sendWindows();
+		//	break;
+		//case "Esc":
+		//	sendEscape();
+		//	break;
+		//default:
+		//	TCHAR * param = new TCHAR[keys.size() + 1];
+		//	param[keys.size()] = 0;
+		//	//As much as we'd love to, we can't use memcpy() because
+		//	//sizeof(TCHAR)==sizeof(char) may not be true:
+		//	std::copy(keys.begin(), keys.end(), param);
+		//	sendKeystrokes(param);
+		//	break;
+		//}
+
 		if (keys == "Enter") {
 			sendEnter();
 		} else if (keys == "Backspace") {
 			sendBackspace();
+		} else if (keys == "Tab") {
+			sendTab();
+		} else if (keys == "Up") {
+			sendUpArrow();
+		} else if (keys == "Down") {
+			sendDownArrow();
+		} else if (keys == "Left") {
+			sendLeftArrow();
+		} else if (keys == "Right") {
+			sendRightArrow();
+		} else if (keys == "Ctrl") {
+			sendControl();
+		} else if (keys == "Alt") {
+			sendAlt();
+		} else if (keys == "Del") {
+			sendDelete();
+		} else if (keys == "Ins") {
+			sendInsert();
+		} else if (keys == "Win") {
+			sendWindows();
+		} else if (keys == "Esc") {
+			sendEscape();
 		} else {
 			TCHAR *param = new TCHAR[keys.size() + 1];
 			param[keys.size()] = 0;
@@ -591,6 +701,7 @@ int main() {
 			std::copy(keys.begin(), keys.end(), param);
 			sendKeystrokes(param);
 		}
+
 	}));
 	
 
