@@ -13,7 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vid", "vid\vid.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "runAs", "runAs\runAs.vcxproj", "{00D02B96-517F-4E0F-8DFC-7D12604D746D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "virus", "virus\virus.vcxproj", "{B7AD5F17-EE84-4256-B2A3-AEB3DFB407B2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "remotr", "remotr\remotr.vcxproj", "{B7AD5F17-EE84-4256-B2A3-AEB3DFB407B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
