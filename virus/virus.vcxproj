@@ -31,6 +31,7 @@
     <ClInclude Include="include\KeyboardController.hpp" />
     <ClInclude Include="include\MouseController.hpp" />
     <ClInclude Include="include\screen.h" />
+    <ClInclude Include="include\tools.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{b7ad5f17-ee84-4256-b2a3-aeb3dfb407b2}</ProjectGuid>
