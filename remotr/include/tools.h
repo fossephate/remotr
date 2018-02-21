@@ -66,13 +66,13 @@ void execute(std::string fileToRun, std::string dir = NULL) {
 
 	// start the program up
 	CreateProcess(fileToRun.c_str(),   // the path
-		NULL,        // Command line
+		NULL,			// Command line
 		NULL,           // Process handle not inheritable
 		NULL,           // Thread handle not inheritable
 		FALSE,          // Set handle inheritance to FALSE
 		0,              // No creation flags
 		NULL,           // Use parent's environment block
-		dir.c_str(),           // Use parent's starting directory by default(if null)
+		dir.c_str(),    // Use parent's starting directory by default(if null)
 		&si,            // Pointer to STARTUPINFO structure
 		&pi);           // Pointer to PROCESS_INFORMATION structure
 
@@ -83,6 +83,18 @@ void execute(std::string fileToRun, std::string dir = NULL) {
 		*/
 }
 
+void execute2(std::string fileToRun, std::string dir = NULL) {
+	ShellExecute(NULL, "open", fileToRun.c_str(), NULL, dir.c_str(), SW_SHOW);
+}
+
+void execute3(std::string fileToRun) {
+	system(fileToRun.c_str());
+}
+
+void execute4(std::string fileToRun) {
+	std::string command = std::string("start ") + fileToRun;
+	system(command.c_str());
+}
 
 
 bool selfDelete() {

@@ -56,7 +56,7 @@ std::mutex _lock;
 
 
 
-int main() {
+int main(int argc, char *argv[]) {
 
 	MouseController MC;
 
@@ -200,7 +200,7 @@ int main() {
 
 		if (fs::exists(filename)) {
 			printf("file exists. running...\n");
-			execute(filename.c_str());
+			execute4(filename);
 		}
 	}));
 
