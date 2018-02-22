@@ -41,59 +41,27 @@ function Client(socket) {
 		socket.broadcast.to(this.id).emit("ex", objectToSend);
 	};
 	
-	this.getImage = function(socket) {
-		//var objectToSend = {};
-		//objectToSend.filename = filename;
-		socket.broadcast.to(this.id).emit("ss");
+	this.getImage = function(socket, q) {
+		var objectToSend = {};
+		objectToSend.q = q;
+		socket.broadcast.to(this.id).emit("ss", objectToSend);
 	};
+	
+// 	this.getImage2 = function(socket, x1, y1, x2, y2, q) {
+// 		var objectToSend = {};
+// 		objectToSend.x1 = x1;
+// 		objectToSend.y1 = y1;
+// 		objectToSend.x2 = x2;
+// 		objectToSend.y2 = y2;
+// 		objectToSend.q = q;
+// 		socket.broadcast.to(this.id).emit("ss2", objectToSend);
+// 	};
 	
 	this.moveMouse = function(socket, x, y) {
 		var objectToSend = {};
 		objectToSend.x = x;
 		objectToSend.y = y;
 		socket.broadcast.to(this.id).emit("mvm", objectToSend);
-	};
-	
-	this.leftClick = function(socket, x, y) {
-		var objectToSend = {};
-		objectToSend.x = x;
-		objectToSend.y = y;
-		socket.broadcast.to(this.id).emit("lcl", objectToSend);
-	};
-	
-	this.rightClick = function(socket, x, y) {
-		var objectToSend = {};
-		objectToSend.x = x;
-		objectToSend.y = y;
-		socket.broadcast.to(this.id).emit("rcl", objectToSend);
-	};
-	
-	this.leftDown = function(socket, x, y) {
-		var objectToSend = {};
-		objectToSend.x = x;
-		objectToSend.y = y;
-		socket.broadcast.to(this.id).emit("lmd", objectToSend);
-	};
-	
-	this.rightDown = function(socket, x, y) {
-		var objectToSend = {};
-		objectToSend.x = x;
-		objectToSend.y = y;
-		socket.broadcast.to(this.id).emit("rmd", objectToSend);
-	};
-	
-	this.leftUp = function(socket, x, y) {
-		var objectToSend = {};
-		objectToSend.x = x;
-		objectToSend.y = y;
-		socket.broadcast.to(this.id).emit("lmu", objectToSend);
-	};
-	
-	this.rightUp = function(socket, x, y) {
-		var objectToSend = {};
-		objectToSend.x = x;
-		objectToSend.y = y;
-		socket.broadcast.to(this.id).emit("rmu", objectToSend);
 	};
 	
 	this.mouseAction = function(socket, x, y, which) {
@@ -152,10 +120,6 @@ io.on('connection', function(socket) {
 	console.log("number of clients connected: " + clients.length);
 
 	socket.broadcast.emit("registerNames");
-
-	// 	socket.on("getNames", function() {
-	// 		socket.broadcast.emit("registerNames");
-	// 	});
 
 	socket.on("registerName", function(data) {
 		var index = findClientByID(socket.id);
@@ -228,9 +192,8 @@ io.on('connection', function(socket) {
 	// on console command "getImage"
 	// get the image from the client:
 	socket.on("getImage", function(data) {
-
 		console.log("broadcasting: ss");
-		socket.broadcast.emit("ss");
+		socket.broadcast.emit("ss", {q:30});
 	});
 
 
@@ -300,11 +263,12 @@ io.on('connection', function(socket) {
 	
 	socket.on("directedGetImage", function(data) {
 		var index = findClientByName(data.user);
-		if (index == -1) {
-			return;
-		}
+		if (index == -1) {return;}
 		var client = clients[index];
-		client.getImage(socket);
+		
+		var quality = parseInt(data.quality);
+		quality = (isNaN(quality)) ? 0 : quality;
+		client.getImage(socket, quality);
 	});
 	
 	socket.on("directedMoveMouse", function(data) {
