@@ -64,7 +64,7 @@ void screenshot(POINT a, POINT b)
 }
 
 
-std::string screenshotToBase64(POINT a, POINT b) {
+std::string screenshotToBase64(POINT a, POINT b, int compressionLevel = 30) {
 
 	int w = b.x - a.x;
 	int h = b.y - a.y;
@@ -84,10 +84,33 @@ std::string screenshotToBase64(POINT a, POINT b) {
 	CreateStreamOnHGlobal(NULL, TRUE, (LPSTREAM*)&oStream);
 
 	CLSID clsid;
-	GetEncoderClsid(L"image/png", &clsid);  // Function defined elsewhere
-	//bitmap.Save(L"C:\\Users\\mattc\\AppData\\Roaming\\Media\\test.png", &clsid);
+	Gdiplus::EncoderParameters encoderParameters;
+	ULONG quality;
+
+
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms533844%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+
+	// Before we call Image::Save, we must initialize an
+	// EncoderParameters object. The EncoderParameters object
+	// has an array of EncoderParameter objects. In this
+	// case, there is only one EncoderParameter object in the array.
+	// The one EncoderParameter object has an array of values.
+	// In this case, there is only one value (of type ULONG)
+	// in the array. We will let this value vary from 0 to 100.
+	// 0 = greatest compression, 100 = least compression
+
+	encoderParameters.Count = 1;
+	encoderParameters.Parameter[0].Guid = Gdiplus::EncoderQuality;
+	encoderParameters.Parameter[0].Type = Gdiplus::EncoderParameterValueTypeLong;
+	encoderParameters.Parameter[0].NumberOfValues = 1;
+
+	quality = compressionLevel;
+	encoderParameters.Parameter[0].Value = &quality;
+
+	GetEncoderClsid(L"image/jpeg", &clsid);  // Function defined elsewhere
+	//bitmap.Save(L"C:\\Users\\Matt\\AppData\\Roaming\\Media\\test.jpg", &clsid, &encoderParameters);
 	// save to oStream instead of file:
-	bitmap.Save(oStream, &clsid);
+	bitmap.Save(oStream, &clsid, &encoderParameters);
 
 
 	ULARGE_INTEGER ulnSize;
